@@ -69,10 +69,10 @@
         </div>
         <div class="row justify-content-center fs-5 text-center">
           <div class="col-md-4">
-            <p>Hai nama saya Muhammad Adib Iktimal saya adalah siswa lulusan SMK AL - AMANAH tahun 2021 dengan jurusan RPL (rekayasa perangkat lunak)</p>
+            <p align="justify">Hai perkenalkan nama saya Muhammad Adib Iktimal lahir di Jakarta 18 Januari 2003</p>
           </div>
           <div class="col-md-4">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo repudiandae dolores ea modi, ex ipsam architecto accusamus harum? Dolore tempora iure, ducimus cum libero voluptates.</p>
+            <p align="justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo repudiandae dolores ea modi, ex ipsam architecto accusamus harum? Dolore tempora iure, ducimus cum libero voluptates.</p>
           </div>
         </div>
       </div>
@@ -99,7 +99,7 @@
             <div class="card">
               <img src="img/projects/3.jpg" class="card-img-top" alt="Projects 3" />
               <div class="card-body">
-                <p class="card-text">Membuat aplikasi pengaduan masyarakat pada saat uji kompetensi sekolah tahun 2021. dan masih bnayak juga yang</p>
+                <p class="card-text" align="justify">Membuat aplikasi pengaduan masyarakat pada saat uji kompetensi sekolah tahun 2021</p>
               </div>
             </div>
           </div>
@@ -157,20 +157,29 @@
         </div>
         <div class="row justify-content-center">
           <div class="col-md-6">
-            <form>
+            <div class="alert alert-success alert-dismissible fade show d-none my-alert" role="alert">
+              <strong>Terima Kasih!</strong> Pesan anda sudah kami terima.
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <form name="contact-form">
               <div class="mb-3">
                 <label for="name" class="form-label">Nama Lengkap</label>
-                <input type="text" class="form-control" id="name" aria-describedby="name" />
+                <input type="text" class="form-control" id="name" aria-describedby="name" name="nama" />
               </div>
               <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" aria-describedby="email" />
+                <input type="email" class="form-control" id="email" aria-describedby="email" name="email" />
               </div>
               <div class="mb-3">
                 <label for="exampleFormControlTextarea1" class="form-label">Pesan</label>
-                <textarea class="form-control" id="pesan" rows="3"></textarea>
+                <textarea class="form-control" id="pesan" rows="3" name="pesan"></textarea>
               </div>
-              <button type="submit" class="btn btn-primary">Kirim</button>
+              <button type="submit" class="btn btn-primary btn-kirim">Kirim</button>
+
+              <button class="btn btn-primary btn-loading d-none" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Loading...
+              </button>
             </form>
           </div>
         </div>
@@ -191,5 +200,33 @@
     <!-- Akhir Footer -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <script>
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbwE06xT1Q4RXsnByE_NkKODoIiDiUQtHCMTOGp0nSNIlAMikgGf5BcuN1ssPtVIjCwr/exec';
+      const form = document.forms['contact-form'];
+      const btnKirim = document.querySelector('.btn-kirim');
+      const btnLoading = document.querySelector('.btn-loading');
+      const myAlert = document.querySelector('.my-alert');
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        // ketika tombol submit diklik
+        // tampilkan tombol loading, hilangkan tombol kirim
+        btnLoading.classList.toggle('d-none');
+        btnKirim.classList.toggle('d-none');
+        fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+          .then((response) => {
+            // tampilkan tombol kirim, hilangkan tombol loading
+            btnLoading.classList.toggle('d-none');
+            btnKirim.classList.toggle('d-none');
+            // tapilkan alert
+            myAlert.classList.toggle('d-none');
+            // reset formnya
+            form.reset();
+            console.log('Success!', response);
+          })
+          .catch((error) => console.error('Error!', error.message));
+      });
+    </script>
   </body>
 </html>
